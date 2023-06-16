@@ -1,0 +1,52 @@
+name: app-v2.funnelai.com Builder
+
+on:
+  push:
+    branches: [release/smai-webapp-front-v2]
+
+jobs:
+  build:
+    name: "Building Gatsby Application for Prod app-v2"
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      GATSBY_API_URL: ${{ secrets.GATSBY_API_URL }}
+      GATSBY_COGNITO_POOL_ID: ${{ secrets.GATSBY_COGNITO_POOL_ID }}
+      GATSBY_COGNITO_CLIENT_ID: ${{ secrets.GATSBY_COGNITO_CLIENT_ID }}
+      GATSBY_FS_ORG_ID: ${{ secrets.GATSBY_FS_ORG_ID }}
+      GATSBY_GOOGLE_ANALYTIC_ID: ${{ secrets.GATSBY_GOOGLE_ANALYTIC_ID }}
+      AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+      APP_S3_BUCKET: ${{ secrets.APP_S3_BUCKET }}
+      APP_HOSTNAME: ${{ secrets.APP_HOSTNAME }}
+      GATSBY_FIREBASE_API_KEY: ${{ secrets.GATSBY_FIREBASE_API_KEY }}
+      GATSBY_FIREBASE_AUTH_DOMAIN: ${{ secrets.GATSBY_FIREBASE_AUTH_DOMAIN }}
+      GATSBY_FIREBASE_PROJECT_ID: ${{ secrets.GATSBY_FIREBASE_PROJECT_ID }}
+      GATSBY_FIREBASE_STORAGE_BUCKET: ${{ secrets.GATSBY_FIREBASE_STORAGE_BUCKET }}
+      GATSBY_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.GATSBY_FIREBASE_MESSAGING_SENDER_ID }}
+      GATSBY_FIREBASE_APP_ID: ${{ secrets.GATSBY_FIREBASE_APP_ID }}
+      GATSBY_FIREBASE_MEASUREMENT_ID: ${{ secrets.GATSBY_FIREBASE_MEASUREMENT_ID }}
+      GATSBY_OPENAI_KEY: ${{ secrets.GATSBY_OPENAI_KEY }}
+      GATSBY_GIF_API_KEY: ${{ secrets.GATSBY_GIF_API_KEY }}
+      GATSBY_APP_ENVIRONMENT: ${{secrets.GATSBY_APP_ENVIRONMENT}}
+    strategy:
+      matrix:
+        node-version: [18.12.1]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: release/smai-webapp-front-v2
+      - name: Use Node.js ${{matrix.node-version}}
+        uses: actions/setup-node@v2.5.2
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: "npm"
+      - run: npm i
+      - run: NODE_OPTIONS=--max_old_space_size=4096 npm run build:prod:app-v2:github-actions
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - run: npm run deploy:prod:app-v2:github-actions
