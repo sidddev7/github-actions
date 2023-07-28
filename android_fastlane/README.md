@@ -1,6 +1,16 @@
-### For building a react native app from the github actions and build the app from fastlane and upload to playstore for different tracks
+# For building a react native app from the github actions and build the app from fastlane and upload to playstore for different tracks
 
-- save the google api key to github secrets environments in base64 encoding
+- Get your app ready to be deployed on Google play store
+
+## Setup Fastlane in macos / Windows / Linux by following steps mentioned [here](https://docs.fastlane.tools/getting-started/ios/setup/)
+
+- run **Fastlane init** inside your root directory
+- Create your custom Lanes inside the Fastfile as you require for different operating systems like android and ios, check [this](https://github.com/sidddev7/fastlane#readme)
+- Create Github actions workflow files as you require specifying the trigger branches, required runner image, jobs that you need to do. check [this](https://github.com/sidddev7/github-actions#readme)
+
+## Setup needed to be done on Github repository
+
+- save the **google api key** to github secrets environments in base64 encoding
 - Decode the google api key secret inside the workflow itself and store it in **tmp** directory that is created for workflow by github actions
 - reference the path to that tmp json file so that it can be used for  authentication with google servers
 - Also reference the aab file or apk file generated from the github actions to the Fastfile Lane explicitly as shown in Fastfile code
