@@ -3,6 +3,7 @@
 - save the google api key to github secrets environments in base64 encoding
 - Decode the google api key secret inside the workflow itself and store it in **tmp** directory that is created for workflow by github actions
 - reference the path to that tmp json file so that it can be used for  authentication with google servers
+- Also reference the aab file or apk file generated from the github actions to the Fastfile Lane explicitly as shown in Fastfile code
 
 ## Github workflow file
 ```javascript
@@ -51,3 +52,36 @@ jobs:
           lane: "android build"
 
 ```
+
+## Fastlane related Code
+
+- For fastlane we need to create a aab or apk file before requesting upload_to_play_store
+- 
+### Appfile
+```ruby
+json_key_file("/tmp/google-credentials.json") # change it to the file name you created at time of decoding the base64 github secret
+```
+
+### Fastfile
+```ruby
+fastlane_version '2.213.0'
+
+platform :android do
+  #android lanes
+  desc 'Build the Android application.'
+  lane :build do
+      gradle(task:"clean bundle",project_dir:"android/",build_type: 'Release',)
+      upload_to_play_store(
+        track:'beta',
+        release_status: 'draft',
+        aab:'./android/app/build/outputs/bundle/release/app-release.aab',  #this can be changed to apk if needed, look at the directory where your app is built by gradle
+        package_name:"io.engagedai.mobileapp"
+      )
+  end
+  lane :build_apk do
+    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+  end
+
+end
+```
+
