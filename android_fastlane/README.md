@@ -1,5 +1,10 @@
-### For building a react native app from the github actions and build the app from fastlane and upload to playstore
+### For building a react native app from the github actions and build the app from fastlane and upload to playstore for different tracks
 
+- save the google api key to github secrets environments in base64 encoding
+- Decode the google api key secret inside the workflow itself and store it in **tmp** directory that is created for workflow by github actions
+- reference the path to that tmp json file so that it can be used for  authentication with google servers
+
+## Github workflow file
 ```javascript
 name: Engaged Ai Android Builder
 
@@ -12,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     environment: Staging
     env:
-      GOOGLE_API_KEY: ${{secrets.GOOGLE_PLAY_STORE_API_KEY}}
+      GOOGLE_API_KEY: ${{secrets.GOOGLE_PLAY_STORE_API_KEY}} // this is the base64 encoded api key stored in github secrets
     strategy:
       matrix:
         node-version: [18.12.1]
