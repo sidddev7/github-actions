@@ -86,7 +86,7 @@ platform :android do
         track:'beta',
         release_status: 'draft',
         aab:'./android/app/build/outputs/bundle/release/app-release.aab',  #this can be changed to apk if needed, look at the directory where your app is built by gradle
-        package_name:"io.engagedai.mobileapp"
+        package_name:"com.example.mobile"
       )
   end
   lane :build_apk do
