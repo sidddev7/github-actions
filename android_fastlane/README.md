@@ -56,7 +56,8 @@ jobs:
 ## Fastlane related Code
 
 - For fastlane we need to create a aab or apk file before requesting upload_to_play_store
-- 
+
+
 ### Appfile
 ```ruby
 json_key_file("/tmp/google-credentials.json") # change it to the file name you created at time of decoding the base64 github secret
