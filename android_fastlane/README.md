@@ -6,7 +6,7 @@
 
 - run **[Fastlane init](https://docs.fastlane.tools/getting-started/ios/setup/#:~:text=directory%20and%20run-,fastlane%20init,-Note%20that%20if)** inside your root directory
 - Create your custom Lanes inside the Fastfile as you require for different operating systems like android and ios, check [this](https://github.com/sidddev7/fastlane#readme)
-- Create Github actions workflow files as you require specifying the trigger branches, required runner image, jobs that you need to do. check [this](https://github.com/sidddev7/github-actions#readme)
+- Create Github actions workflow files as you require specifying the trigger branches, required runner image, jobs that you need to do, check [this](https://github.com/sidddev7/github-actions#readme)
 
 ## Setup needed to be done on Github repository
 - Create environments you need, see [here](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
