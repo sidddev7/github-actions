@@ -17,16 +17,16 @@
 
 ## Github workflow file
 ```javascript
-name: Engaged Ai Android Builder
+name: Name your runner
 
 on:
   push:
-    branches: [patch/fastlane-android]
+    branches: [**tirgger_branch_name**]
 
 jobs:
   build:
     runs-on: ubuntu-22.04
-    environment: Staging
+    environment: **environment you want to use**
     env:
       GOOGLE_API_KEY: ${{secrets.GOOGLE_PLAY_STORE_API_KEY}} // this is the base64 encoded api key stored in github secrets
     strategy:
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: patch/fastlane-android
+          ref: **checkout_branch_name**
       - name: Use Nodejs ${{matrix.node-version}}
         uses: actions/setup-node@v2.5.2
         with:
